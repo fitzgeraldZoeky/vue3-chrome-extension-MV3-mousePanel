@@ -32,7 +32,7 @@ let mousemoveable = false
 document.addEventListener('enableFunc', handleEnableFunc)
 function handleEnableFunc(event) {
   const type = event.detail.type
-  console.log('🪠🪠🪠')
+  console.log('🪠🪠🪠', type)
   funcs[type]()
 }
 

@@ -8,17 +8,4 @@ chrome.commands.onCommand.addListener((command, tab) => {
     chrome.tabs.sendMessage(tab.id, { action: 'showPanel', tab}) // 向当前标签页的内容脚本发送消息，要求显示面板
   })
 
-// 监听 复制功能 传递的消息
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    // console.log('复制功能')
-    if (request.action === "copy") {
-      navigator.clipboard && navigator.clipboard.writeText(request.text)
-        .then(() => { 
-          // do nothing
-        })
-        .catch(err => {
-          console.error("Error copying to clipboard: ", err)
-      })
-    }
-})
 
