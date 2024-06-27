@@ -1,0 +1,32 @@
+{
+    "manifest_version": 3,
+    "name": "CRXJS Vue Vite Example",
+    "version": "1.0.0",
+    "description": "鼠标灵动环，支持4个功能的触发操作，包括复制、截图、粘贴、修改页面title。",
+    "action": { 
+      "default_popup": "index.html",
+      "default_title": "默认标题"
+    },
+    "permissions": [
+      "activeTab",
+      "tabs",
+      "storage",
+      "clipboardWrite"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["https://xueshu.baidu.com/*"],
+        "js": ["src/content.js"]
+      }
+    ],
+    "background": {
+      "service_worker": "src/background.js", 
+      "type": "module" 
+    },
+    "commands": {
+        "key-press-flag": {
+          "suggested_key": "Ctrl+Shift+Z",
+          "description": "激活工具面板的键盘事件"
+        }
+    }
+  }
