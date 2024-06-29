@@ -32,7 +32,6 @@ let mousemoveable = false
 document.addEventListener('enableFunc', handleEnableFunc)
 function handleEnableFunc(event) {
   const type = event.detail.type
-  console.log('🪠🪠🪠', type)
   funcs[type]()
 }
 
@@ -45,7 +44,6 @@ document.addEventListener('mousemove', (e) => {
   // 当按键按下，鼠标移动时，表示正在选择功能
   // 如果松开按键，表示取消选择
   // 如果松开鼠标，表示确认选择
-  // console.log('🐰🐰🐰', mousemoveable, e)
   mousemove.x = e.clientX
   mousemove.y = e.clientY
   mousemove.concern = false
@@ -56,6 +54,7 @@ document.addEventListener('mousemove', (e) => {
 // 抬起鼠标确定判断
 document.addEventListener('mouseup', (e) => {
   if (cancel) return
+  keyFlag && !cancel && e.preventDefault() // panel激活的时候阻止鼠标默认事件影响功能使用
   mousemoveable = false
   mousemove.x = e.clientX
   mousemove.y = e.clientY
@@ -66,7 +65,7 @@ document.addEventListener('mouseup', (e) => {
 
 // 监听鼠标按下事件
 document.addEventListener('mousedown', (e) => { 
-  keyFlag && !cancel && e.preventDefault()
+  keyFlag && !cancel && e.preventDefault() // panel激活的时候阻止鼠标默认事件
   if (e.button === 0 && !cancel) { // 如果按下的是左键
     if (keyFlag) {
       // 触发显示,获取鼠标位置信息？

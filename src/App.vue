@@ -1,18 +1,30 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 import logo from './assets/icons/icon-128.png'
+import copy from './assets/icons/copy-32.png'
+import paste from './assets/icons/paste-32.png'
+import weather from './assets/icons/weather-32.png'
+import snap from './assets/icons/snap-32.png'
 
 const logoUrl = chrome.runtime.getURL(logo)
-console.log('....🤣🤣app.vue', logo, logoUrl)
+// 注册 icons
+// 直接用src的存放路径浏览器是解析不到资源的
+// 加载资源会有问题 
+// 同时注册了使用的功能,为以后拓展功能做准备
+const funcs = {}
+funcs[0] = chrome.runtime.getURL(paste)
+funcs[1] = chrome.runtime.getURL(weather)
+funcs[2] = chrome.runtime.getURL(snap)
+funcs[3] = chrome.runtime.getURL(copy)
+
 </script>
 
 <template>
   <!-- <div>
     <img :src="logoUrl" alt="logo-supre-mouse"/>
-    直接用src的存放路径浏览器是解析不到资源的
-    <img src="./assets/icons/icon-128.png" alt="logo"/>
+
   </div> -->
-  <HelloWorld />
+  <HelloWorld :func-icons="funcs"/>
 </template>
 
 <style scoped>
