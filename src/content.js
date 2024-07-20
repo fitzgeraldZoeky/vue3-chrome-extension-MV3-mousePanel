@@ -1,15 +1,21 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import copy from './utils/Func-copy.js'
+import hangingon from './utils/Func-hangingon.js'
 import paste from './utils/Func-paste.js'
 import readme from './utils/Func-readme.js'
 import snap from './utils/Func-snap.js'
+
+
+
 
 // 功能路径
 const funcs = {
   copy,
   paste,
   readme,
+  hangingon,
   snap
 }
 
@@ -31,8 +37,13 @@ let mousemoveable = false
 // 注册自定义监听器，监听 vue 文件传递的激活功能信息
 document.addEventListener('enableFunc', handleEnableFunc)
 function handleEnableFunc(event) {
-  const type = event.detail.type
-  funcs[type]()
+  const type = event.detail.funcType.type
+  const position = event.detail.position
+  if (position) {
+    funcs[type](position)
+  } else {
+    funcs[type]()
+  }
 }
 
 
@@ -127,11 +138,26 @@ chrome.runtime.onMessage.addListener(({action, tab}) => {
 
 
 // 添加一个根元素，这个就是 shadow DOM 的 root element
+// shadow DOM 用于隔离扩展添加元素的样式和用户界面的样式
+// Shadow DOM主要用于封装组件的样式和结构，避免与页面其他部分的CSS发生冲突。
+// 如果你希望利用其封装性，你需要在内容脚本中显式创建Shadow DOM并插入内容。
 // 这个根元素就是插件为页面添加的内容
 const root = document.createElement('div')
 root.id = 'crx-root'
 document.body.append(root)
 
+/**
+ * 
+ *   插件 其他功能  注册区域
+ */
+
+// 注册 pinia
+const pinia = createPinia()
+// console.log('在这里挂载啊？')
+
 const app = createApp(App)
+
+app.use(pinia)
+
 app.mount(root)
 

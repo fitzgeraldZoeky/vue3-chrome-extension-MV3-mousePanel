@@ -12,7 +12,8 @@
       "tabs",
       "storage",
       "clipboardWrite",
-      "clipboardRead"
+      "clipboardRead",
+      "geolocation"
     ],
     "content_scripts": [
       {

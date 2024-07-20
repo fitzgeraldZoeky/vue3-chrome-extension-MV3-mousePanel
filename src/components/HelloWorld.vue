@@ -4,13 +4,20 @@
 <script setup>
 import { ref, onMounted, onBeforeMount, reactive, defineProps, watch } from 'vue'
 import { getIcon } from '../utils/Tools'
+import { useChromeurlStore } from '../store/useChromeurlStore'
+import { useFishStore } from '../store/useFishStore'
+import { usePanelStore } from '../store/usePanelStore'
 
-const { funcIcons } = defineProps({
-  funcIcons: {
-    type: Object,
-    required: true
-  }
-});
+let chromeurlStore = null
+
+const fishStore = useFishStore()
+const panelStore = usePanelStore()
+// const { funcIcons } = defineProps({
+//   funcIcons: {
+//     type: Object,
+//     required: true
+//   }
+// });
 
 let clientX = ref()
 let clientY = ref()
@@ -25,10 +32,16 @@ let realcanvas = {} // canvas DOM
 let funcType = {
   type: null
 }
+// 自定义事件位置信息，木鱼功能需要
+let position = {
+  x: null,
+  y: null
+}
 // 注册自定义事件传递激活的功能
-const enableFunc = new CustomEvent('enableFunc', { detail: funcType })
+const enableFunc = new CustomEvent('enableFunc', { detail: {funcType, position} })
 
 onBeforeMount(() => {
+  chromeurlStore = useChromeurlStore()
 // 注册自定义监听器
   document.addEventListener('displayPanel', handleDisplayPanel)
   document.addEventListener('mousemoving', handleMousemoving)
@@ -67,6 +80,8 @@ function handleMousemoving(event) {
     // 最终鼠标抬起的位置，根据这个判断选择的功能
     // 之后隐藏panel，能够判断选择的区域则执行功能，不能判断区域的直接隐藏
     if (currentQuadrant.value > 0) {
+      position.x = null
+      position.y = null
       // 动效
       switch (currentQuadrant.value) {
         case 1:
@@ -77,7 +92,9 @@ function handleMousemoving(event) {
           funcType.type = 'paste'
           break
         case 3:
-          funcType.type = 'readme'
+          funcType.type = 'hangingon'
+          position.x = current.x
+          position.y = current.y
           break
         case 4:
           funcType.type = 'snap'
@@ -118,7 +135,9 @@ function drawScale(quadrant, canvas) {
   function scaleQuadrant(index, ctx) {
     drawRing(realcanvas) //执行顺序很有趣
     let i = getScaleIndex(index)
-    const img = getIcon(funcIcons[i])
+    // const img = getIcon(funcIcons[i])11111111111111111
+    const img = getIcon(chromeurlStore.funcs[i])   
+    console.log()
     img.onload = function onloadScale() {
       clearQuadrant(index, ctx)
       // 顺时针绘制，所以象限和index的对应关系 Q1--3, Q2---0, Q3---1, Q4---2
@@ -211,6 +230,8 @@ let origin = reactive({})
 // panel初始位置
 function handleDisplayPanel(event) {
   // 激活显示panel
+  fishStore.hide()
+  panelStore.display()
   panelStatus.value = true
   clientX.value = event.detail.x
   clientY.value = event.detail.y
@@ -241,7 +262,8 @@ function drawRing(canvas) {
     ctx.stroke();
     // 加上icon,不加阴影
     ctx.restore()
-    const img = getIcon(funcIcons[i])
+    // const img = getIcon(funcIcons[i])1111111111111
+    const img = getIcon(chromeurlStore.funcs[i]) 
     img.onload = function onloadRing() {
       // i --- 象限---> 0--Q2 1--Q3 2--Q4 3--Q1
       let { c, d } = getImageXY(i, -1)
@@ -299,7 +321,7 @@ function getImageXY(index, type) {
   position: fixed;
   z-index: 999;
 }
-#txw-panel {
+/* #txw-panel {
   border: 1px solid black;
-}
+} */
 </style>
