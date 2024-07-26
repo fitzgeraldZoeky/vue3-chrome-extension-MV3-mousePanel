@@ -8,8 +8,18 @@ export default function() {
     // 后台脚本不能访问到 navigator.clipboard 等 剪切板 相关API
     navigator.clipboard.readText()
     .then(text => {
+        const s = +activeElement.selectionStart
+        const e = +activeElement.selectionEnd
+        console.log(activeElement.selectionEnd, activeElement.selectionStart, activeElement.value)
         // 把信息填充到聚焦的可输入元素中
-        activeElement.value = text
+        if (activeElement.value) {
+            // 根据光标判断
+            if (s >= 0 || e >= 0) {
+                activeElement.value = activeElement.value.substring(0, s) + text + activeElement.value.substring(e)
+            }
+        } else {
+            activeElement.value = text
+        }
     })
     .catch(err => {
         console.log('Error paste text: ', err)

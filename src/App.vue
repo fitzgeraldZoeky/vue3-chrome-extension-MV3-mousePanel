@@ -7,12 +7,14 @@
   <!-- <HelloWorld :func-icons="funcs" :transform-icons="tfuncs" /> -->
   <HelloWorld v-if="panelStore.showPanel" />
   <Fish v-if="fishStore.showFish" />
+  <Weather v-if="weatherStore.showWeather" />
 </template>
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 import Fish from './components/Funcs/Woodenfish.vue'
+import Weather from './components/Funcs/Weather.vue'
 
-import { onBeforeMount, ref } from 'vue'
+// import { onBeforeMount, ref } from 'vue'
 
 import logo from './assets/icons/icon-128.png'
 import copy from './assets/icons/copy-32.png'
@@ -27,6 +29,7 @@ import snap from './assets/icons/snap-32.png'
 import { useChromeurlStore } from './store/useChromeurlStore'
 import { useFishStore } from './store/useFishStore'
 import { usePanelStore } from './store/usePanelStore'
+import { useWeatherStore } from './store/useWeatherStore'
 
 // 扩展中  content.js 相当于 main.js 
 // main.js 实际上不会被执行，可能可以通过设置 manifest 来执行
@@ -34,12 +37,14 @@ import { usePanelStore } from './store/usePanelStore'
 const chromeurlStore = useChromeurlStore()
 const fishStore = useFishStore()
 const panelStore = usePanelStore()
+const weatherStore = useWeatherStore()
 
 // // 试验 pinia 是否可行
 // // 不行，pinia 注册有问题
 chromeurlStore.setChromeURL(paste, 0, 'paste')
 chromeurlStore.setChromeURL(hangingon, 1, 'hangingon')
-chromeurlStore.setChromeURL(snap, 2, 'snap')
+// chromeurlStore.setChromeURL(snap, 2, 'snap')
+chromeurlStore.setChromeURL(weather, 2, 'weather')
 chromeurlStore.setChromeURL(copy, 3, 'copy')
 chromeurlStore.setChromeURL(woodfish, -1, 'woodfish')
 chromeurlStore.setChromeURL(woodfishMp3, -1, 'woodfish', 'mp3') // 添加 MP3 资源

@@ -15,6 +15,9 @@
       "clipboardRead",
       "geolocation"
     ],
+    "host_permissions": [
+      "https://api.oioweb.cn/api/weather/GetWeather"
+    ],
     "content_scripts": [
       {
         "matches": ["https://xueshu.baidu.com/*"],

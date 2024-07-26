@@ -7,11 +7,13 @@ import { getIcon } from '../utils/Tools'
 import { useChromeurlStore } from '../store/useChromeurlStore'
 import { useFishStore } from '../store/useFishStore'
 import { usePanelStore } from '../store/usePanelStore'
+import { useWeatherStore } from '../store/useWeatherStore'
 
 let chromeurlStore = null
 
 const fishStore = useFishStore()
 const panelStore = usePanelStore()
+const weatherStore = useWeatherStore()
 // const { funcIcons } = defineProps({
 //   funcIcons: {
 //     type: Object,
@@ -97,7 +99,10 @@ function handleMousemoving(event) {
           position.y = current.y
           break
         case 4:
-          funcType.type = 'snap'
+          // funcType.type = 'snap'
+          funcType.type = 'weather'
+          position.x = current.x
+          position.y = current.y
           break
       }
       document.dispatchEvent(enableFunc)
@@ -231,6 +236,7 @@ let origin = reactive({})
 function handleDisplayPanel(event) {
   // 激活显示panel
   fishStore.hide()
+  weatherStore.hide()
   panelStore.display()
   panelStatus.value = true
   clientX.value = event.detail.x

@@ -6,6 +6,7 @@ import hangingon from './utils/Func-hangingon.js'
 import paste from './utils/Func-paste.js'
 import readme from './utils/Func-readme.js'
 import snap from './utils/Func-snap.js'
+import weather from './utils/Func-weather.js'
 
 
 
@@ -16,7 +17,8 @@ const funcs = {
   paste,
   readme,
   hangingon,
-  snap
+  snap,
+  weather
 }
 
 let keyFlag = false
