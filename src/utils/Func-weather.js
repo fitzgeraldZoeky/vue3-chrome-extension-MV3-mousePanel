@@ -11,6 +11,7 @@ export default function(payload) {
     // 监听 天气 激活事件，更新位置参数
     weatherStore.setPosition(payload.x, payload.y)
     panelStore.hide()
+    weatherStore.display() // test
     // 处理天气请求
     async function getWeather() {
         try {
@@ -31,5 +32,5 @@ export default function(payload) {
             weatherStore.setLoading(false)
         }
     }
-    getWeather()
+    // getWeather()
 }
